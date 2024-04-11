@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>My Memo</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 id="currentTime"></h1>
+            <h4>My Memo</h4>
+            <div class="content-wrapper">
+                <input type="text" placeholder="add item" id="new-todo" class="inputbox">
+                <button id="add-btn" class="btn">Add</button>
+            </div>
+        </header>
+        <section class="list-style">
+            <div class="todo-area">
+                <h3 class="todo-text">Todo</h3>
+                <ul id="my-todo" class="todo-style">
+                    <!-- display todos here -->
+                    <div class="warning">none...</div>
+                </ul>
+            </div>
+            <div class="done-area">
+                <h3 class="done-text">Done</h3>
+                <ul id="done" class="done-style">
+                    <!-- display todos here -->
+                </ul>
+            </div>
+        </section>
+        <footer>
+            <p class="footer-text">make by duchi4321</p>
+        </footer>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
