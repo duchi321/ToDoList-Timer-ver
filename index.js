@@ -1,4 +1,7 @@
 const currentTime = document.querySelector('#currentTime')
+const newTodo = document.querySelector('#new-todo')
+const addBtn = document.querySelector('#add-btn')
+const myTodo = document.querySelector('#my-todo')
 
 const model = {
     getdataDate() {
@@ -17,6 +20,14 @@ const view = {
         const seconds = ('0' + model.getdataDate().getSeconds()).slice(-2);
         const timeString = `${year}<span>年</span> ${month}<span>月</span> ${day}<span>日</span> ${hours}:${minutes}:${seconds}`;
         currentTime.innerHTML = timeString;
+    },
+    renderNewItem(text) {
+        let newItem = document.createElement('li')
+        newItem.innerHTML = `
+        <label for="my-todo">${text}</label>
+        <i class="delete">X</i>
+        `
+        myTodo.appendChild(newItem)
     }
 }
 
@@ -25,5 +36,17 @@ const controller = {
         setInterval(view.renderCurrentTime, 1000)
         view.renderCurrentTime()
     },
+    getNewItem() {
+        addBtn.addEventListener('click', () => {
+            let getText = newTodo.value.trim()
+            if (getText.length > 0) {
+                view.renderNewItem(getText)
+                newTodo.value = ''
+            } else {
+                alert('請輸入內容')
+            }
+        })
+    }
 }
 controller.getCurrentTime()
+controller.getNewItem()
