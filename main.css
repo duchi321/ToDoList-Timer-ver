@@ -6,3 +6,14 @@
 span {
     font-size: 22px;
 }
+
+.checked {
+    color: #ccc;
+    text-decoration: line-through;
+    font-style: italic;
+}
+
+.deleteX {
+    margin: 0 5px;
+    color: #bbb;
+}

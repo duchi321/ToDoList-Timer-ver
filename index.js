@@ -5,7 +5,6 @@ const myTodo = document.querySelector('#my-todo')
 const myDone = document.querySelector('#done')
 const checkList = document.querySelector('#checkList')
 
-
 const model = {
     getdataDate() {
         const now = new Date()
@@ -28,7 +27,7 @@ const view = {
         let warning = document.createElement('div')
         warning.classList.add('warning')
         warning.textContent = 'none...'
-        myTodo.prepend(warning)
+        return warning
     },
     renderRemoveNone() {
         let warning = document.querySelector('.warning')
@@ -42,6 +41,14 @@ const view = {
         `
         myTodo.appendChild(newItem)
     },
+    renderNewDone(text) {
+        let newItem = document.createElement("li");
+        newItem.innerHTML = `
+    <label for="done" class="checked">${text}</label>
+    <i class="delete deleteX">X</i>
+  `
+        myDone.appendChild(newItem)
+    },
     renderRemoveItem(click) {
         click.remove()
     }
@@ -54,18 +61,31 @@ const controller = {
     },
     addNone() {
         if (myTodo.childElementCount === 0) {
-            view.renderNone()
+            myTodo.prepend(view.renderNone())
+        }
+        if (myDone.childElementCount === 0) {
+            myDone.prepend(view.renderNone())
         }
     },
     removeNone() {
-        let childElements = myTodo.querySelectorAll("*");
+        let myTodoChildren = myTodo.querySelectorAll("*");
+        let myDonechildren = myDone.querySelectorAll("*")
         // 遍歷每個子元素，檢查是否與指定的 CSS 選擇器匹配
-        for (let i = 0; i < childElements.length; i++) {
-            let childElement = childElements[i];
+        for (let i = 0; i < myTodoChildren.length; i++) {
+            let childElement = myTodoChildren[i];
             if (childElement.matches(".warning")) {
                 view.renderRemoveNone()
             }
         }
+        if (myDone.children.length > 1) {
+            for (let i = 0; i < myDonechildren.length; i++) {
+                let childElement = myDonechildren[i];
+                if (childElement.matches(".warning")) {
+                    view.renderRemoveNone()
+                }
+            }
+        }
+
     },
     getNewItem() {
         addBtn.addEventListener('click', () => {
@@ -86,10 +106,24 @@ const controller = {
                 this.addNone()
             }
         })
+    },
+    getDoneItem() {
+        checkList.addEventListener("click", (event) => {
+            const parentElement = event.target.parentElement;
+            if (event.target.tagName === "LABEL") {
+                if (!event.target.classList.contains("checked")) {
+                    view.renderNewDone(event.target.innerHTML);
+                    parentElement.remove();
+                    this.removeNone()
+                    this.addNone()
+                }
+            }
+        })
     }
 }
 
 controller.addNone()
 controller.getCurrentTime()
 controller.getNewItem()
+controller.getDoneItem()
 controller.removeItem()
