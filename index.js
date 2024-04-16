@@ -87,6 +87,18 @@ const controller = {
         }
 
     },
+    enterNewItem() {
+        newTodo.addEventListener("keyup", (event) => {
+            const getText = newTodo.value.trim();
+            if (event.key === "Enter" && getText.length > 0) {
+                this.removeNone()
+                view.renderNewItem(getText)
+                newTodo.value = "";
+            } else if (event.key === "Enter") {
+                alert("請輸入資料");
+            }
+        });
+    },
     getNewItem() {
         addBtn.addEventListener('click', () => {
             let getText = newTodo.value.trim()
@@ -124,6 +136,7 @@ const controller = {
 
 controller.addNone()
 controller.getCurrentTime()
+controller.enterNewItem()
 controller.getNewItem()
 controller.getDoneItem()
 controller.removeItem()
