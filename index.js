@@ -4,6 +4,7 @@ const addBtn = document.querySelector('#add-btn')
 const myTodo = document.querySelector('#my-todo')
 const myDone = document.querySelector('#done')
 const checkList = document.querySelector('#checkList')
+let timerCount = 0; // 記錄計時器的數量，以便為每個計時器生成唯一的 ID
 
 const model = {
     getdataDate() {
@@ -33,6 +34,13 @@ const view = {
         let warning = document.querySelector('.warning')
         warning.remove()
     },
+    renderTimer(timerId, text) {
+        const timerDiv = document.createElement("div");
+        timerDiv.id = timerId;
+        timerDiv.innerHTML = `<label for="my-todo" class="close">${text}</label><span id='${timerId}_display' class="close">00秒</span><i class="delete">X</i>`;
+        myTodo.appendChild(timerDiv);
+        return timerDiv;
+    },
     renderNewItem(text) {
         let newItem = document.createElement('li')
         newItem.innerHTML = `
@@ -51,6 +59,22 @@ const view = {
     },
     renderRemoveItem(click) {
         click.remove()
+    },
+    formatTime(elapsedTime) {
+        const totalSeconds = Math.floor(elapsedTime / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const remainingSeconds = totalSeconds % 86400;
+        const hr = Math.floor(remainingSeconds / 3600);
+        const Min = Math.floor((remainingSeconds % 3600) / 60);
+        const sec = remainingSeconds % 60;
+        const renderresult = `${this.pad(days)}天${this.pad(hr)}時${this.pad(Min)}分${this.pad(sec)}秒`;
+        return renderresult;
+    },
+    pad(time) {
+        if (time < 10) {
+            return String(time).padStart(2, "0");
+        }
+        return time;
     }
 }
 
@@ -85,14 +109,40 @@ const controller = {
                 }
             }
         }
-
+    },
+    createTimer(text) {
+        const timerId = "timer_" + timerCount++;
+        const timerDiv = view.renderTimer(timerId, text);
+        const displayTimerId = document.querySelector(`#${timerId}_display`);
+        const startTime = Date.now();
+        const timerInterval = this.startTimerInterval(startTime, displayTimerId);
+    },
+    startTimerInterval(startTime, displayTimerId) {
+        const timerInterval = setInterval(() => {
+            const formattedTime = view.formatTime(Date.now() - startTime);
+            this.updateTimerDisplay(displayTimerId, formattedTime, startTime);
+        }, 1000);
+        return timerInterval;
+    },
+    updateTimerDisplay(displayTimerId, formattedTime, startTime) {
+        const elapsedTime = Date.now() - startTime;
+        console.log(elapsedTime)
+        if (elapsedTime >= 86400000) {
+            displayTimerId.textContent = formattedTime;
+        } else if (elapsedTime >= 3600000) {
+            displayTimerId.textContent = formattedTime.substring(3);
+        } else if (elapsedTime >= 60000) {
+            displayTimerId.textContent = formattedTime.substring(6);
+        } else {
+            displayTimerId.textContent = formattedTime.substring(9);
+        }
     },
     enterNewItem() {
         newTodo.addEventListener("keyup", (event) => {
             const getText = newTodo.value.trim();
             if (event.key === "Enter" && getText.length > 0) {
                 this.removeNone()
-                view.renderNewItem(getText)
+                this.createTimer(getText)
                 newTodo.value = "";
             } else if (event.key === "Enter") {
                 alert("請輸入資料");
@@ -104,7 +154,7 @@ const controller = {
             let getText = newTodo.value.trim()
             if (getText.length > 0) {
                 this.removeNone()
-                view.renderNewItem(getText)
+                this.createTimer(getText)
                 newTodo.value = ''
             } else {
                 alert('請輸入內容')
