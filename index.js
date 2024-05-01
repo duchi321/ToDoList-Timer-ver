@@ -3,7 +3,6 @@ const newTodo = document.querySelector('#new-todo')
 const addBtn = document.querySelector('#add-btn')
 const myTodo = document.querySelector('#my-todo')
 const myDone = document.querySelector('#done')
-const checkList = document.querySelector('#checkList')
 let timerCount = 0; // 記錄計時器的數量，以便為每個計時器生成唯一的 ID
 
 const model = {
@@ -34,30 +33,23 @@ const view = {
         let warning = document.querySelector('.warning')
         warning.remove()
     },
-    renderTimer(timerId, text) {
+    renderTimer(text, timerId) {
         const timerDiv = document.createElement("div");
         timerDiv.id = timerId;
-        timerDiv.innerHTML = `<label for="my-todo" class="close">${text}</label><span id='${timerId}_display' class="close">00秒</span><i class="delete">X</i>`;
+        timerDiv.innerHTML = `<label for="my-todo" class="close">${text}</label><span id='${timerId}_display'>00秒</span><i class="delete">X</i>`;
         myTodo.appendChild(timerDiv);
+        console.log(timerDiv)
         return timerDiv;
     },
-    renderNewItem(text) {
-        let newItem = document.createElement('li')
-        newItem.innerHTML = `
-        <label for="my-todo">${text}</label>
-        <i class="delete">X</i>
+    renderDoneItem(text) {
+        const doneItem = document.createElement('li')
+        doneItem.innerHTML = `
+        <label for="done" class="checked finished">${text}</label>
+        <i class="delete finished">X</i>
         `
-        myTodo.appendChild(newItem)
+        myDone.appendChild(doneItem)
     },
-    renderNewDone(text) {
-        let newItem = document.createElement("li");
-        newItem.innerHTML = `
-    <label for="done" class="checked">${text}</label>
-    <i class="delete deleteX">X</i>
-  `
-        myDone.appendChild(newItem)
-    },
-    renderRemoveItem(click) {
+    renderRemoveDoneItem(click) {
         click.remove()
     },
     formatTime(elapsedTime) {
@@ -112,21 +104,33 @@ const controller = {
     },
     createTimer(text) {
         const timerId = "timer_" + timerCount++;
-        const timerDiv = view.renderTimer(timerId, text);
+        const timerDiv = view.renderTimer(text, timerId);
         const displayTimerId = document.querySelector(`#${timerId}_display`);
         const startTime = Date.now();
         const timerInterval = this.startTimerInterval(startTime, displayTimerId);
+
+        timerDiv.setAttribute("data-timerId", timerId);
+        timerDiv.setAttribute("data-intervalId", timerInterval);
+
+        timerDiv.addEventListener('click', (event) => {
+            if (event.target.matches('.close')) {
+                this.finfshedItem(timerId);
+                view.renderDoneItem(event.target.textContent)
+                this.removeNone()
+                this.addNone()
+            }
+        })
+        this.deleteTimer(timerInterval);
     },
     startTimerInterval(startTime, displayTimerId) {
-        const timerInterval = setInterval(() => {
-            const formattedTime = view.formatTime(Date.now() - startTime);
-            this.updateTimerDisplay(displayTimerId, formattedTime, startTime);
+        return setInterval(() => {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+            this.updateTimerDisplay(displayTimerId, elapsedTime);
         }, 1000);
-        return timerInterval;
     },
-    updateTimerDisplay(displayTimerId, formattedTime, startTime) {
-        const elapsedTime = Date.now() - startTime;
-        console.log(elapsedTime)
+    updateTimerDisplay(displayTimerId, elapsedTime) {
+        const formattedTime = view.formatTime(elapsedTime);
         if (elapsedTime >= 86400000) {
             displayTimerId.textContent = formattedTime;
         } else if (elapsedTime >= 3600000) {
@@ -151,7 +155,7 @@ const controller = {
     },
     getNewItem() {
         addBtn.addEventListener('click', () => {
-            let getText = newTodo.value.trim()
+            const getText = newTodo.value.trim()
             if (getText.length > 0) {
                 this.removeNone()
                 this.createTimer(getText)
@@ -161,26 +165,30 @@ const controller = {
             }
         })
     },
-    removeItem() {
-        checkList.addEventListener('click', (evnet) => {
+    removeDoneItem() {
+        myDone.addEventListener('click', (evnet) => {
             if (evnet.target.matches('.delete')) {
-                view.renderRemoveItem(evnet.target.parentElement)
+                view.renderRemoveDoneItem(evnet.target.parentElement)
                 this.addNone()
             }
         })
     },
-    getDoneItem() {
-        checkList.addEventListener("click", (event) => {
-            const parentElement = event.target.parentElement;
-            if (event.target.tagName === "LABEL") {
-                if (!event.target.classList.contains("checked")) {
-                    view.renderNewDone(event.target.innerHTML);
-                    parentElement.remove();
-                    this.removeNone()
-                    this.addNone()
-                }
+    deleteTimer(timerInterval) {
+        myTodo.addEventListener("click", (event) => {
+            if (event.target.matches(".delete")) {
+                clearInterval(timerInterval);
+                event.target.parentElement.remove();
+                this.addNone()
             }
-        })
+        });
+    },
+    finfshedItem(timerId) {
+        const timerDiv = document.querySelector(`[data-timerId="${timerId}"]`);
+        if (timerDiv) {
+            const intervalId = parseInt(timerDiv.getAttribute("data-intervalId"));
+            clearInterval(intervalId);
+            timerDiv.remove();
+        }
     }
 }
 
@@ -188,5 +196,6 @@ controller.addNone()
 controller.getCurrentTime()
 controller.enterNewItem()
 controller.getNewItem()
-controller.getDoneItem()
-controller.removeItem()
+controller.deleteTimer()
+controller.finfshedItem()
+controller.removeDoneItem()
