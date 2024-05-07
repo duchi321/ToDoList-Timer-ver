@@ -4,10 +4,6 @@
     list-style-type: none;
 }
 
-span {
-    font-size: 22px;
-}
-
 .checked {
     color: #ccc;
     text-decoration: line-through;

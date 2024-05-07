@@ -3,12 +3,21 @@ const newTodo = document.querySelector('#new-todo')
 const addBtn = document.querySelector('#add-btn')
 const myTodo = document.querySelector('#my-todo')
 const myDone = document.querySelector('#done')
-let timerCount = 0; // 記錄計時器的數量，以便為每個計時器生成唯一的 ID
+const todoNone = document.querySelector('.todo-none')
+const doneNone = document.querySelector('.done-none')
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let finishtasks = JSON.parse(localStorage.getItem("finishtasks")) || [];
 
 const model = {
     getdataDate() {
         const now = new Date()
         return now
+    },
+    setTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    },
+    setFinishtasks() {
+        localStorage.setItem("finishtasks", JSON.stringify(finishtasks));
     }
 }
 
@@ -23,50 +32,96 @@ const view = {
         const timeString = `${year}<span>年</span> ${month}<span>月</span> ${day}<span>日</span> ${hours}:${minutes}:${seconds}`;
         currentTime.innerHTML = timeString;
     },
-    renderNone() {
-        let warning = document.createElement('div')
-        warning.classList.add('warning')
-        warning.textContent = 'none...'
+    renderTodoNone() {
+        let warning = document.createElement('div');
+        warning.classList.add('myTodoNone');
+        warning.textContent = 'none...';
         return warning
     },
-    renderRemoveNone() {
-        let warning = document.querySelector('.warning')
-        warning.remove()
+    renderDoneNone() {
+        let warning = document.createElement('div');
+        warning.classList.add('myDoneNone');
+        warning.textContent = 'none...';
+        return warning
     },
-    renderTimer(text, timerId) {
-        const timerDiv = document.createElement("div");
-        timerDiv.id = timerId;
-        timerDiv.innerHTML = `<label for="my-todo" class="close">${text}</label><span id='${timerId}_display'>00秒</span><i class="delete">X</i>`;
-        myTodo.appendChild(timerDiv);
-        console.log(timerDiv)
-        return timerDiv;
+    renderRemoveNone(removeclass) {
+        if (removeclass) {
+            removeclass.remove()
+        }
     },
-    renderDoneItem(text) {
-        const doneItem = document.createElement('li')
-        doneItem.innerHTML = `
-        <label for="done" class="checked finished">${text}</label>
-        <i class="delete finished">X</i>
-        `
-        myDone.appendChild(doneItem)
+
+    renderItem() {
+        myTodo.innerHTML = ''
+        tasks.forEach((task, index) => {
+            const li = document.createElement("li");
+            const newItem = document.createElement("span");
+            const elapsedTime = Math.floor(task.elapsedTime / 1000); // 计算总时间，转换为秒
+            newItem.classList.add('getItem')
+            newItem.setAttribute('for', 'my-todo');
+            const totaltime = elapsedTime
+            const formattedTime = this.formatTime(elapsedTime);
+            this.updateTimerDisplay(newItem, totaltime, formattedTime)
+            newItem.textContent = `${task.text} - ${newItem.textContent}`;
+            newItem.addEventListener("click", () => {
+                if (newItem.matches('.getItem')) {
+                    controller.finishedItem(index)
+                }
+            });
+            li.appendChild(newItem);
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add('delete')
+            deleteBtn.textContent = "X";
+            deleteBtn.addEventListener("click", () => {
+                controller.deleteItem(index);
+            });
+            li.appendChild(deleteBtn);
+            myTodo.appendChild(li);
+        })
+        controller.removeNone()
     },
-    renderRemoveDoneItem(click) {
-        click.remove()
+    renderDoneItem() {
+        myDone.innerHTML = "";
+        finishtasks.forEach((finishtask, index) => {
+            const li = document.createElement('li');
+            const finishItem = document.createElement("span");
+            finishItem.classList.add('checked', 'finished');
+            finishItem.textContent = `${finishtask.text}`;
+            li.appendChild(finishItem);
+            const delFinishBtn = document.createElement('button');
+            delFinishBtn.classList.add('delete', 'finished');
+            delFinishBtn.textContent = 'X';
+            delFinishBtn.addEventListener('click', () => {
+                controller.removeDoneItem(index);
+            });
+            li.appendChild(delFinishBtn);
+            myDone.appendChild(li);
+        });
+        controller.removeNone()
     },
     formatTime(elapsedTime) {
-        const totalSeconds = Math.floor(elapsedTime / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const remainingSeconds = totalSeconds % 86400;
+        const days = Math.floor(elapsedTime / 86400);
+        const remainingSeconds = elapsedTime % 86400;
         const hr = Math.floor(remainingSeconds / 3600);
-        const Min = Math.floor((remainingSeconds % 3600) / 60);
+        const min = Math.floor((remainingSeconds % 3600) / 60);
         const sec = remainingSeconds % 60;
-        const renderresult = `${this.pad(days)}天${this.pad(hr)}時${this.pad(Min)}分${this.pad(sec)}秒`;
-        return renderresult;
+        return `${this.pad(days)}天${this.pad(hr)}時${this.pad(min)}分${this.pad(sec)}秒`;
     },
     pad(time) {
         if (time < 10) {
             return String(time).padStart(2, "0");
         }
         return time;
+    },
+    updateTimerDisplay(item, totaltime, elapsedTime) {
+        if (totaltime >= 86400) {
+            item.textContent = `${elapsedTime}`;
+        } else if (totaltime >= 3600) {
+            item.textContent = `${elapsedTime.substring(3)}`;
+        } else if (totaltime >= 60) {
+            item.textContent = `${elapsedTime.substring(6)}`;
+        } else {
+            item.textContent = `${elapsedTime.substring(9)}`;
+        }
     }
 }
 
@@ -76,126 +131,97 @@ const controller = {
         view.renderCurrentTime()
     },
     addNone() {
-        if (myTodo.childElementCount === 0) {
-            myTodo.prepend(view.renderNone())
+        if (myTodo.children.length === 0 && todoNone.children.length === 0) {
+            todoNone.appendChild(view.renderTodoNone())
         }
-        if (myDone.childElementCount === 0) {
-            myDone.prepend(view.renderNone())
+        if (myDone.children.length === 0 && doneNone.children.length === 0) {
+            doneNone.appendChild(view.renderDoneNone())
         }
     },
     removeNone() {
-        let myTodoChildren = myTodo.querySelectorAll("*");
-        let myDonechildren = myDone.querySelectorAll("*")
-        // 遍歷每個子元素，檢查是否與指定的 CSS 選擇器匹配
-        for (let i = 0; i < myTodoChildren.length; i++) {
-            let childElement = myTodoChildren[i];
-            if (childElement.matches(".warning")) {
-                view.renderRemoveNone()
-            }
+        if (myTodo.children.length > 0) {
+            const myTodoNone = document.querySelector('.myTodoNone');
+            view.renderRemoveNone(myTodoNone)
         }
-        if (myDone.children.length > 1) {
-            for (let i = 0; i < myDonechildren.length; i++) {
-                let childElement = myDonechildren[i];
-                if (childElement.matches(".warning")) {
-                    view.renderRemoveNone()
-                }
-            }
+        if (myDone.children.length > 0) {
+            const myDoneNone = document.querySelector('.myDoneNone');
+            view.renderRemoveNone(myDoneNone)
         }
     },
-    createTimer(text) {
-        const timerId = "timer_" + timerCount++;
-        const timerDiv = view.renderTimer(text, timerId);
-        const displayTimerId = document.querySelector(`#${timerId}_display`);
-        const startTime = Date.now();
-        const timerInterval = this.startTimerInterval(startTime, displayTimerId);
-
-        timerDiv.setAttribute("data-timerId", timerId);
-        timerDiv.setAttribute("data-intervalId", timerInterval);
-
-        timerDiv.addEventListener('click', (event) => {
-            if (event.target.matches('.close')) {
-                this.finfshedItem(timerId);
-                view.renderDoneItem(event.target.textContent)
-                this.removeNone()
-                this.addNone()
-            }
-        })
-        this.deleteTimer(timerInterval);
-    },
-    startTimerInterval(startTime, displayTimerId) {
-        return setInterval(() => {
-            const currentTime = Date.now();
-            const elapsedTime = currentTime - startTime;
-            this.updateTimerDisplay(displayTimerId, elapsedTime);
-        }, 1000);
-    },
-    updateTimerDisplay(displayTimerId, elapsedTime) {
-        const formattedTime = view.formatTime(elapsedTime);
-        if (elapsedTime >= 86400000) {
-            displayTimerId.textContent = formattedTime;
-        } else if (elapsedTime >= 3600000) {
-            displayTimerId.textContent = formattedTime.substring(3);
-        } else if (elapsedTime >= 60000) {
-            displayTimerId.textContent = formattedTime.substring(6);
+    newItem() {
+        const getText = newTodo.value.trim()
+        if (getText.length > 0) {
+            const task = {
+                text: getText,
+                startTime: new Date().getTime(), // 记录任务开始时间
+                elapsedTime: 0 // 记录已经过的时间
+            };
+            tasks.push(task);
+            view.renderItem()
+            newTodo.value = ''
+            model.setTasks()
         } else {
-            displayTimerId.textContent = formattedTime.substring(9);
+            alert('請輸入內容')
         }
     },
     enterNewItem() {
-        newTodo.addEventListener("keyup", (event) => {
-            const getText = newTodo.value.trim();
-            if (event.key === "Enter" && getText.length > 0) {
-                this.removeNone()
-                this.createTimer(getText)
-                newTodo.value = "";
-            } else if (event.key === "Enter") {
-                alert("請輸入資料");
+        newTodo.addEventListener('keyup', (event) => {
+            if (event.key === "Enter") {
+                this.newItem()
             }
         });
     },
     getNewItem() {
         addBtn.addEventListener('click', () => {
-            const getText = newTodo.value.trim()
-            if (getText.length > 0) {
-                this.removeNone()
-                this.createTimer(getText)
-                newTodo.value = ''
-            } else {
-                alert('請輸入內容')
-            }
+            this.newItem()
         })
     },
-    removeDoneItem() {
-        myDone.addEventListener('click', (evnet) => {
-            if (evnet.target.matches('.delete')) {
-                view.renderRemoveDoneItem(evnet.target.parentElement)
-                this.addNone()
-            }
-        })
-    },
-    deleteTimer(timerInterval) {
-        myTodo.addEventListener("click", (event) => {
-            if (event.target.matches(".delete")) {
-                clearInterval(timerInterval);
-                event.target.parentElement.remove();
-                this.addNone()
-            }
-        });
-    },
-    finfshedItem(timerId) {
-        const timerDiv = document.querySelector(`[data-timerId="${timerId}"]`);
-        if (timerDiv) {
-            const intervalId = parseInt(timerDiv.getAttribute("data-intervalId"));
-            clearInterval(intervalId);
-            timerDiv.remove();
+    finishedItem(index) {
+        if (tasks[index]) {
+            finishtasks.push(tasks[index]); // 将完成的任务添加到 finishtasks 数组中
+            tasks.splice(index, 1); // 从 tasks 数组中删除完成的任务
+            view.renderItem(); // 重新渲染任务列表
+            view.renderDoneItem(); // 重新渲染任务列表
+            this.addNone()
+            model.setTasks() // 更新本地存储
+            model.setFinishtasks(); // 更新本地存储
+        } else {
+            console.log('not get')
         }
+    },
+    deleteItem(index) {
+        tasks.splice(index, 1); // 从数组中删除项目
+        view.renderItem(); // 重新渲染任务列表
+        this.addNone()
+        model.setTasks(); // 更新本地存储
+    },
+    removeDoneItem(index) {
+        finishtasks.splice(index, 1); // 从数组中删除项目
+        view.renderDoneItem(); // 重新渲染任务列表
+        this.addNone()
+        model.setFinishtasks(); // 更新本地存储
+    },
+    runTime() {
+        setInterval(() => {
+            tasks.forEach((task) => {
+                task.elapsedTime = new Date().getTime() - task.startTime; // 更新已过时间
+            });
+            view.renderItem()
+            model.setTasks();
+        }, 1000);
+    },
+    start() {
+        this.addNone()
+        this.getCurrentTime()
+        this.enterNewItem()
+        this.getNewItem()
+        this.runTime()
     }
 }
 
-controller.addNone()
-controller.getCurrentTime()
-controller.enterNewItem()
-controller.getNewItem()
-controller.deleteTimer()
-controller.finfshedItem()
-controller.removeDoneItem()
+controller.start()
+window.onload = () => {
+    console.log("window.onload touch");
+    view.renderItem();
+    view.renderDoneItem()
+};
