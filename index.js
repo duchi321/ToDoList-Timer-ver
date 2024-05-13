@@ -1,4 +1,5 @@
 const currentTime = document.querySelector('#currentTime')
+const phoneTime = document.querySelector('#phoneTime')
 const newTodo = document.querySelector('#new-todo')
 const addBtn = document.querySelector('#add-btn')
 const myTodo = document.querySelector('#my-todo')
@@ -29,8 +30,9 @@ const view = {
         const hours = ('0' + model.getdataDate().getHours()).slice(-2);
         const minutes = ('0' + model.getdataDate().getMinutes()).slice(-2);
         const seconds = ('0' + model.getdataDate().getSeconds()).slice(-2);
-        const timeString = `${year}<span>年</span> ${month}<span>月</span> ${day}<span>日</span> ${hours}:${minutes}:${seconds}`;
+        const timeString = `${year}<span>年</span> ${month}<span>月</span> ${day}<span>日</span> ${hours} : ${minutes} : ${seconds}`;
         currentTime.innerHTML = timeString;
+        phoneTime.innerHTML = `${hours}:${minutes}`
     },
     renderTodoNone() {
         let warning = document.createElement('div');
@@ -49,7 +51,6 @@ const view = {
             removeclass.remove()
         }
     },
-
     renderItem() {
         myTodo.innerHTML = ''
         tasks.forEach((task, index) => {
@@ -84,11 +85,11 @@ const view = {
         finishtasks.forEach((finishtask, index) => {
             const li = document.createElement('li');
             const finishItem = document.createElement("span");
-            finishItem.classList.add('checked', 'finished');
+            finishItem.classList.add('finished');
             finishItem.textContent = `${finishtask.text}`;
             li.appendChild(finishItem);
             const delFinishBtn = document.createElement('button');
-            delFinishBtn.classList.add('delete', 'finished');
+            delFinishBtn.classList.add('delete');
             delFinishBtn.textContent = 'X';
             delFinishBtn.addEventListener('click', () => {
                 controller.removeDoneItem(index);
