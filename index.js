@@ -36,13 +36,13 @@ const view = {
     },
     renderTodoNone() {
         let warning = document.createElement('div');
-        warning.classList.add('myTodoNone');
+        warning.classList.add('myTodoNone', 'nonetext');
         warning.textContent = 'none...';
         return warning
     },
     renderDoneNone() {
         let warning = document.createElement('div');
-        warning.classList.add('myDoneNone');
+        warning.classList.add('myDoneNone', 'nonetext');
         warning.textContent = 'none...';
         return warning
     },

@@ -63,21 +63,22 @@
     /* outline: 3px solid red; */
     width: 3rem;
     height: 1.2rem;
-    background-color: #000;
+    background-color: #111;
     border-radius: 8px;
     transform: translateX(20px);
 }
 
 .battery {
     /* outline: 3px solid red; */
-    width: 2.5rem;
+    width: 2.6rem;
     height: .9rem;
     color: #fff;
     background-color: #93ff93de;
+    border: 2px solid #fff;
     border-radius: 6px;
-    transform: translate(-24px, 3px);
+    transform: translate(-24px, 2.5px);
     font-size: 10px;
-    padding: 1px 0 0 6px;
+    padding: 0 0 0 6px;
 }
 
 /* Container Styles */
@@ -135,13 +136,13 @@ main {
     /* outline: 2px solid yellow; */
     display: flex;
     width: 100%;
+    padding: 0 20px;
 }
 
 .manual {
     /* outline: 2px solid green; */
     color: #6d4c41;
     font-weight: bold;
-    width: 300px;
     flex-basis: 20%;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -156,14 +157,12 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }
 
-.todo-none,
-.done-none {
-    /* outline: 3px solid red; */
-    margin: 15px;
+.nonetext {
+    padding: 10px;
 }
 
 .todo-area {
-    /* outline: 2px solid red;  */
+    /* outline: 2px solid red; */
     flex-basis: 70%;
 }
 
@@ -176,7 +175,7 @@ main {
 .done-text {
     /* outline: 3px solid red; */
     width: 96%;
-    padding: 10px;
+    padding: 5px;
     font-weight: bolder;
     color: #3e2723;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -196,18 +195,18 @@ main {
 .finished {
     /* outline: 2px solid rgb(48, 39, 164); */
     display: inline-block;
-    margin: 0px 10px 2px 20px;
+    margin: 5px 10px 2px 2px;
     padding: 5px;
     width: 300px;
+    height: 32px;
     font-weight: bolder;
     overflow: hidden;
     box-shadow: 15px 2px 5px rgba(100, 182, 82, 0.2);
 }
 
 .finished {
-    /* outline: 2px solid red; */
-    margin: 0px 10px 2px 5px;
-    width: 130px;
+    margin: 5px 10px 2px 2px;
+    width: 120px;
     color: #bbb;
     font-style: italic;
     text-decoration: line-through;
@@ -215,7 +214,7 @@ main {
 }
 
 .delete {
-    padding: 7px 10px;
+    padding: 7.5px 10px;
     color: #fff;
     border: none;
     border-radius: 5px;
