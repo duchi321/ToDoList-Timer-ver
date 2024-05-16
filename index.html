@@ -9,57 +9,63 @@
 </head>
 
 <body>
-    <div class="backlayout">
-        <div class="phone">
-            <!-- Top -->
-            <div class="top-interface">
-                <div id="phoneTime"></div>
-                <div class="icons">
-                    <div class="batterysink"></div>
-                    <div class="battery">100%</div>
+    <input type="checkbox" id="switch">
+    <div class="app">
+        <div class="backlayout">
+            <div class="phone">
+                <!-- Top -->
+                <div class="top-interface">
+                    <div id="phoneTime"></div>
+                    <div class="icons">
+                        <div class="batterysink"></div>
+                        <div class="battery">100%</div>
+                    </div>
                 </div>
-            </div>
-            <!-- middle -->
-            <div class="container">
-                <header>
-                    <h1>My Memo</h1>
-                    <h2 id="currentTime"></h2>
-                    <div class="content-wrapper">
-                        <input type="text" placeholder="add item" id="new-todo" class="inputbox">
-                        <button id="add-btn" class="btn">Add</button>
-                    </div>
-                </header>
-                <main>
-                    <section id="checkList">
-                        <div class="todo-area">
-                            <h3 class="todo-text">Todo</h3>
-                            <div class="todo-none"></div>
-                            <ul id="my-todo" class="todo-style">
-                                <!-- display todos here -->
+                <!-- middle -->
+                <div class="container">
+                    <header>
+                        <h1>My Memo</h1>
+                        <h2 id="currentTime"></h2>
+                        <div class="content-wrapper">
+                            <input type="text" placeholder="add item" id="new-todo" class="inputbox">
+                            <button id="add-btn" class="btn">Add</button>
+                            <label for="switch" class="switchArea">
+                                <div class="toggle"></div>
+                            </label>
+                        </div>
+                    </header>
+                    <main>
+                        <section id="checkList">
+                            <div class="todo-area">
+                                <h3 class="todo-text">Todo</h3>
+                                <div class="todo-none"></div>
+                                <ul id="my-todo" class="todo-style">
+                                    <!-- display todos here -->
+                                </ul>
+                            </div>
+                            <div class="done-area">
+                                <h3 class="done-text">Done</h3>
+                                <div class="done-none"></div>
+                                <ul id="done" class="done-style">
+                                    <!-- display todos here -->
+                                </ul>
+                            </div>
+                        </section>
+                        <div class="manual">使用者說明:<br>
+                            此Memo功能主要是對輸入的每個事件設置定時器，提醒使用者事件已存在多久，並進行管理。
+                            <ul>
+                                <br>
+                                <li>1. 輸入文字後，點選Add或按下Enter,就會登入項目並開始計時。</li>
+                                <li>2. 對Todo區域文本按下滑鼠左鍵,可轉移項目到Done區域，表示完成項目。</li>
+                                <li>3. 叉叉按鈕『X』，表示清除該項目。</li>
                             </ul>
                         </div>
-                        <div class="done-area">
-                            <h3 class="done-text">Done</h3>
-                            <div class="done-none"></div>
-                            <ul id="done" class="done-style">
-                                <!-- display todos here -->
-                            </ul>
-                        </div>
-                    </section>
-                    <div class="manual">使用者說明:<br>
-                        此Memo功能主要是對輸入的每個事件設置定時器，提醒使用者事件已存在多久，並進行管理。
-                        <ul>
-                            <br>
-                            <li>1. 輸入文字後，點選Add或按下Enter,就會登入項目並開始計時。</li>
-                            <li>2. 對Todo區域文本按下滑鼠左鍵,可轉移項目到Done區域，表示完成項目。</li>
-                            <li>3. 叉叉按鈕『X』，表示清除該項目。</li>
-                        </ul>
-                    </div>
-                </main>
+                    </main>
+                </div>
+                <footer>
+                    <p class="footer-text">make by duchi4321</p>
+                </footer>
             </div>
-            <footer>
-                <p class="footer-text">make by duchi4321</p>
-            </footer>
         </div>
     </div>
     <script src="index.js"></script>
