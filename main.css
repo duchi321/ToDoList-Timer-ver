@@ -643,3 +643,141 @@ main {
         padding: 8px;
     }
 }
+
+@media (min-width: 768px) and (max-width: 991.99px) {
+    .backlayout {
+        /* outline: 1px solid red; */
+        width: 100%;
+        height: 100%;
+        display: block;
+        background-image: none;
+        background: #f2e9e1;
+    }
+
+    [type="checkbox"]:checked+.app .backlayout {
+        background-image: none;
+        background: #1e1f26;
+    }
+
+    .phone {
+        /* outline: 3px solid red; */
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: none;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    [type="checkbox"]:checked+.app .phone {
+        border: none;
+    }
+
+    /* phone-top */
+    .top-interface {
+        display: none;
+    }
+
+    .container {
+        /* outline: 3px solid red; */
+        margin: none;
+        border-radius: 0;
+    }
+
+    header {
+        margin-bottom: 7px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .inputbox {
+        padding: 4px;
+        margin: 0 10px 0 0;
+    }
+
+    .btn {
+        margin-top: 0;
+        padding: 5px 15px;
+    }
+
+    .switchArea {
+        margin: 0 0 0 15px;
+    }
+
+    [type="checkbox"]:checked+.app .toggle {
+        transform: translateX(75%);
+    }
+
+    main {
+        /* outline: 2px solid blue; */
+        height: 100%;
+        padding: 0 10px;
+    }
+
+    #checkList {
+        /* outline: 2px solid blue; */
+        flex-grow: 1;
+        height: 100%;
+    }
+
+    .manual {
+        flex-basis: 20%;
+        height: 555px;
+        font-size: 14px;
+        margin-left: 15px;
+    }
+
+    .todo-area,
+    .done-area {
+        /* outline: 2px solid red; */
+        height: 100%;
+    }
+
+    .todo-area {
+        flex-basis: 60%;
+        margin-right: 15px;
+    }
+
+    .done-area {
+        flex-grow: 1;
+    }
+
+    .todo-style,
+    .done-style {
+        /* outline: 3px solid rgb(95, 244, 15); */
+        height: 523px;
+        flex-wrap: nowrap;
+        overflow: auto;
+    }
+
+    .getItem,
+    .finished {
+        /* outline: 2px solid rgb(48, 39, 164); */
+        margin: 10px 10px 5px 15px;
+        width: 75%;
+        height: 33px;
+        overflow: hidden;
+        box-shadow: 5px 5px 3px rgba(112, 212, 89, 0.2);
+    }
+
+    .finished {
+        width: 70%;
+        margin: 10px 0px 5px 15px;
+        box-shadow: 0px 4px 3px rgba(217, 40, 58, 0.2);
+    }
+
+    .delete {
+        transform: translate(-12px, -15px);
+    }
+
+    /* Footer Styles */
+    .footer-text {
+        /* outline: 2px solid blue; */
+        color: #4e342e;
+        padding: 10px;
+    }
+}
