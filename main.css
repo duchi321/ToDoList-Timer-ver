@@ -10,20 +10,17 @@
         "Segoe UI", "Roboto", "Oxygen",
         "Ubuntu", "Cantarell", "Fira Sans",
         "Droid Sans", "Helvetica Neue", sans-serif;
-    ;
 }
 
 .backlayout {
     /* outline: 10px solid red; */
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     background-image: url('images/tree-woodenDesktop.jpg');
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
     background-position: 20% 35%;
     transition: .4s;
@@ -38,7 +35,6 @@
     box-shadow: 0 4px 35px rgba(0, 0, 0, .1);
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
 }
 
 /* phone-top */
@@ -55,20 +51,6 @@
     color: #fff;
     margin-left: 1.5rem;
     transition: .4s;
-}
-
-.icons {
-    /* outline: 3px solid red; */
-    display: flex;
-}
-
-.batterysink {
-    /* outline: 3px solid red; */
-    width: 3rem;
-    height: 1.2rem;
-    background-color: #333;
-    border-radius: 8px;
-    transform: translateX(20px);
 }
 
 .battery {
@@ -89,7 +71,6 @@
 .container {
     /* outline: 3px solid red; */
     width: 96%;
-    max-height: 580px;
     margin: 0 auto;
     border-radius: 10px;
     background: #f2e9e1;
@@ -184,7 +165,6 @@ main {
     flex-basis: 20%;
     margin-left: 10px;
     padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: .4s;
 }
 
@@ -192,11 +172,7 @@ main {
     /* outline: 2px solid blue; */
     display: flex;
     flex-grow: 1;
-    justify-content: center;
     width: 100%;
-    height: 440px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
 }
 
 .nonetext {
@@ -210,23 +186,26 @@ main {
 .manual {
     outline: 2px solid #6d4c41;
     height: 440px;
-    border-radius: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.manual {
+    margin-left: 15px;
 }
 
 .todo-area {
-    /* outline: 2px solid red; */
-    flex-basis: 65%;
-    margin-right: 10px;
+    width: 65%;
+    margin-right: 15px;
 }
 
 .done-area {
-    /* outline: 2px solid red; */
-    flex-grow: 1;
+    width: 35%;
 }
 
 .todo-text,
 .done-text {
-    /* outline: 3px solid red; */
     width: 100%;
     padding: 5px 0 5px 15px;
     font-weight: bolder;
@@ -234,18 +213,17 @@ main {
     background: #6d4c41;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: .4s;
 }
 
 .todo-style,
 .done-style {
     /* outline: 3px solid rgb(95, 244, 15); */
-    height: 400px;
+    height: 406px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     transition: .4s;
 }
 
@@ -253,20 +231,20 @@ main {
 .finished {
     /* outline: 2px solid rgb(48, 39, 164); */
     display: inline-block;
-    margin: 5.5px 10px 2px 5px;
+    margin: 5px 10px 5px 5px;
     padding: 5px;
-    width: 300px;
+    width: 18vw;
     height: 32px;
     font-weight: bolder;
     overflow: hidden;
+    cursor: pointer;
     box-shadow: 15px 2px 5px rgba(112, 212, 89, 0.317);
     transition: .4s;
 }
 
 .finished {
-    /* outline: 1px solid red; */
-    width: 130px;
-    margin: 5.5px 5px 2px 15px;
+    width: 7.5vw;
+    margin: 5px 5px 5px 15px;
     color: #bbb;
     font-style: italic;
     text-decoration: line-through;
@@ -279,20 +257,19 @@ main {
     border: none;
     border-radius: 5px;
     background-color: #6d4c41;
-    overflow: hidden;
     cursor: pointer;
-    transform: translate(-12px, -13px);
+    transform: translate(-12px, -15px);
+    transition: .4s;
 }
 
 /* Footer Styles */
-footer {
+.footer-text {
     /* outline: 2px solid blue; */
     font-weight: bolder;
     color: #f2eada;
     text-align: center;
-    margin-top: 10px;
+    padding: 10px;
 }
-
 
 /* -------- Switch Styles ------------*/
 [type="checkbox"] {
@@ -301,8 +278,9 @@ footer {
 
 /* Toggle */
 [type="checkbox"]:checked+.app .toggle {
-    transform: translateX(70%);
-    background-color: #34323D;
+    transform: translateX(75%);
+    background: #0f0e0e;
+    outline: 1px solid #205375;
 }
 
 /* App */
@@ -326,6 +304,7 @@ footer {
 }
 
 [type="checkbox"]:checked+.app .container {
+
     background: #1e1f26;
     color: #52f9ff;
 }
@@ -357,32 +336,19 @@ footer {
     opacity: .4;
 }
 
-[type="checkbox"]:checked+.app .toggle {
-    background: #0f0e0e;
-    outline: 1px solid #205375;
-}
-
 [type="checkbox"]:checked+.app .manual {
     background: #333;
-    color: #C0C0C0;
+    color: #cccccc;
     outline: 2px solid #205375;
 }
 
-[type="checkbox"]:checked+.app .todo-text {
-    background: #205375;
-    color: #fff;
-}
-
+[type="checkbox"]:checked+.app .todo-text,
 [type="checkbox"]:checked+.app .done-text {
     background: #205375;
     color: #fff;
 }
 
-[type="checkbox"]:checked+.app .todo-area {
-    outline: 2px solid #205375;
-    background: #333;
-}
-
+[type="checkbox"]:checked+.app .todo-area,
 [type="checkbox"]:checked+.app .done-area {
     outline: 2px solid #205375;
     background: #333;
@@ -392,16 +358,14 @@ footer {
     color: #fff;
 }
 
-[type="checkbox"]:checked+.app .getItem {
+[type="checkbox"]:checked+.app .getItem,
+[type="checkbox"]:checked+.app .finished {
     background: #333;
     box-shadow: none;
     border-bottom: 2px solid #205375;
 }
 
-
 [type="checkbox"]:checked+.app .finished {
-    background: #333;
-    box-shadow: none;
     border-bottom: 2px solid rgba(255, 0, 0, .2);
 }
 
@@ -409,8 +373,138 @@ footer {
     background: #205375;
 }
 
-[type="checkbox"]:checked+.app footer {
+[type="checkbox"]:checked+.app .footer-text {
     color: #96ded1;
 }
 
-/* background: linear-gradient(40deg, #8983F7, #A3DAFB 70%); */
+@media (max-width: 576px) {
+    .backlayout {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background-image: none;
+        background: #f2e9e1;
+    }
+
+    [type="checkbox"]:checked+.app .backlayout {
+        background-image: none;
+        background: #1e1f26;
+    }
+
+    .phone {
+        /* outline: 1px solid red; */
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: none;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    [type="checkbox"]:checked+.app .phone {
+        border: none;
+    }
+
+    .top-interface {
+        /* outline: 3px solid red; */
+        display: none;
+    }
+
+    .container {
+        /* outline: 3px solid red; */
+        margin: none;
+        border-radius: 0;
+    }
+
+    header {
+        /* outline: 2px solid red; */
+        margin-bottom: 5px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .inputbox {
+        padding: 4px;
+        margin: 0 5px 0 0;
+    }
+
+    .btn {
+        margin-top: 0;
+        padding: 5px 15px;
+    }
+
+    .switchArea {
+        margin: 0 0 0 10px;
+    }
+
+    [type="checkbox"]:checked+.app .toggle {
+        transform: translateX(75%);
+    }
+
+    main {
+        height: 100%;
+        padding: 0 5px;
+    }
+
+    .manual {
+        display: none;
+    }
+
+    #checkList {
+        /* outline: 2px solid blue; */
+        flex-grow: 0;
+    }
+
+    .todo-area,
+    .done-area {
+        /* outline: 2px solid red; */
+        height: 100%;
+    }
+
+    .todo-area {
+        flex-basis: 55%;
+        margin-right: 15px;
+    }
+
+    .done-area {
+        flex-grow: 1;
+    }
+
+    .todo-style,
+    .done-style {
+        /* outline: 3px solid rgb(95, 244, 15); */
+        height: 535px;
+        flex-wrap: nowrap;
+        overflow: auto;
+    }
+
+    .getItem,
+    .finished {
+        /* outline: 2px solid rgb(48, 39, 164); */
+        margin: 10px 5px 5px 15px;
+        width: 75%;
+        height: 34px;
+        overflow: hidden;
+        box-shadow: 5px 5px 3px rgba(112, 212, 89, 0.2);
+    }
+
+    .finished {
+        width: 65%;
+        margin: 10px 0px 5px 20px;
+        box-shadow: 2px 4px 3px rgba(217, 40, 58, 0.2);
+    }
+
+    .delete {
+        transform: translate(-12px, -15px);
+    }
+
+    .footer-text {
+        /* outline: 1px solid red; */
+        color: #4e342e;
+        padding: 8px;
+    }
+}
