@@ -6,6 +6,8 @@ const myTodo = document.querySelector('#my-todo')
 const myDone = document.querySelector('#done')
 const todoNone = document.querySelector('.todo-none')
 const doneNone = document.querySelector('.done-none')
+const switchArea = document.querySelector('.switchArea')
+let FirstColor = true
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let finishtasks = JSON.parse(localStorage.getItem("finishtasks")) || [];
 
@@ -123,6 +125,14 @@ const view = {
         } else {
             item.textContent = `${elapsedTime.substring(9)}`;
         }
+    },
+    renderLightColor() {
+        const lightColor = '#f2e9e1'
+        document.body.style.backgroundColor = lightColor;
+    },
+    renderDarkColor() {
+        const darkColor = '#1e1f26'
+        document.body.style.backgroundColor = darkColor;
     }
 }
 
@@ -211,7 +221,18 @@ const controller = {
             model.setTasks();
         }, 1000);
     },
+    toggleBodyColor() {
+        switchArea.addEventListener('click', () => {
+            if (FirstColor) {
+                view.renderDarkColor()
+            } else {
+                view.renderLightColor()
+            }
+            FirstColor = !FirstColor
+        })
+    },
     start() {
+        this.toggleBodyColor()
         this.addNone()
         this.getCurrentTime()
         this.enterNewItem()
